@@ -862,3 +862,4 @@ Karena website www.eden.wise.yyy.com semakin banyak pengunjung dan banyak modifi
 
 ## :large_blue_circle: **Kesulitan dan Revisi** :large_blue_circle: 
 kesulitan terletak pada nomor 6 sampai 17 yang mengakibatkan kurang maksimalnya pada saat demo praktikum 
+Revisi : kami mengerjakan nomor 6 sampai dengan nomor 12
