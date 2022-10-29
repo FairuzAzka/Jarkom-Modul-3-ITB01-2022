@@ -513,7 +513,7 @@ Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pert
 
 ### :rocket: **WISE**
 
-Mengubah konfigurasi `/etc/bind/wise/wise.itb01.com` yang awalnya IP Wise menjadi IP Eden
+Mengubah konfigurasi `/etc/bind/wise/wise.itb02.com` yang awalnya IP Wise menjadi IP Eden
 ```JavaScript
 $TTL    604800
 @       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
@@ -551,7 +551,7 @@ apt-get install ca-certificates openssl -y
 apt-get install wget -y
 ```
 
-Mengedit file nano /etc/apache2/sites-available/wise.itb01.com.conf
+Mengedit file nano /etc/apache2/sites-available/wise.itb02.com.conf
 
 ```JavaScript
 <VirtualHost *:80>
@@ -613,8 +613,8 @@ nameserver 192.215.3.3
 Lynx
 
 ```JavaScript
-lynx wise.itb01.com
-lynx www.wise.itb01.com
+lynx wise.itb02.com
+lynx www.wise.itb02.com
 ```
 
 <img src="./img/Nomor8.jpg">
@@ -638,7 +638,7 @@ a2enmod rewrite
 service apache2 restart
 ```
 
-Mengkonfigurasi file nano /var/www/wise.itb01.com/.htaccess untuk melakukan pengecekan apakah request-an yang diterima ke file/direktori atau bukan, jika terpenuhi maka membuat rule yang akan mendirect ke /index.php/home. $1 ialah parameter yang diin[utkan di url konfigurasi file
+Mengkonfigurasi file nano /var/www/wise.itb02.com/.htaccess untuk melakukan pengecekan apakah request-an yang diterima ke file/direktori atau bukan, jika terpenuhi maka membuat rule yang akan mendirect ke /index.php/home. $1 ialah parameter yang diin[utkan di url konfigurasi file
 
 ```JavaScript
 RewriteEngine On
@@ -647,7 +647,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (.*) /index.php/\$1 [L]
 ```
 
-Mengkonfigurasi file nano /etc/apache2/sites-available/wise.itb01.com.conf
+Mengkonfigurasi file nano /etc/apache2/sites-available/wise.itb02.com.conf
 
 ```JavaScript
 <VirtualHost *:80>
@@ -688,7 +688,6 @@ lynx www.wise.itb01.com/home
 
 <img src="./img/Nomor9.png">
 <br>
-<br>
 
 ## :large_blue_circle: **Soal 10** :large_blue_circle: 
 Setelah itu, pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan aset yang memiliki DocumentRoot pada /var/www/eden.wise.yyy.com (10).
@@ -696,7 +695,7 @@ Setelah itu, pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
 
-### :rocket: **WISE**
+### :rocket: **Eden**
 
 Melakukan konfigurasi pada file /etc/apache2/sites-available/eden.wise.itb01.com.conf
 ```
@@ -716,58 +715,30 @@ Melakukan konfigurasi pada file /etc/apache2/sites-available/eden.wise.itb01.com
 </VirtualHost>
 ```
 
-Melakukan aktivasi virtualhost menggunakan a2ensite dan membuat sebuah direktori untuk documentroot dari subdomain eden.wise.itb01.com lalu memindahkan folder eden.wise dalam root pada /var/www/eden.wise.itb01.com/
-
-```
-a2ensite eden.wise.itb01.com
-mkdir -p  `/var/www/eden.wise.itb01.com/`
-mv eden.wise/ /var/www/eden.wise.itb01.com/
-service apache2 restart
-```
-
-Pengetesan
-(gambar testing lynx eden.wise.itb01.com)
-
-## :large_blue_circle: **Soal 11** :large_blue_circle: 
-Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja (11).
-
-### :triangular_flag_on_post: **Jawaban:**
-<br>
-
-## :large_blue_circle: **Soal 12** :large_blue_circle: 
-Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache (12).
-
-### :triangular_flag_on_post: **Jawaban:**
-<br>
-### :rocket: **Eden**
-
-Melakukan konfigurasi ErrorDoocument pada setiap error yang diarahkan kepada file.
-konfigurasi tersebut diletakan pada direktori /etc/apache2/sites-available/eden.wise.itb01.com.conf
+Mengaktifkan konfigurasi dari eden.wise.itb01.com.conf
 
 ```JavaScript
-<VirtualHost *:80>
-        ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/eden.wise.itb01.com
-        ServerName eden.wise.itb01.com
-        ServerAlias www.eden.wise.itb01.com
+a2ensite eden.wise.itb02.com.conf
+```
 
-        ErrorDocument 404 /error/404.html
-        ErrorDocument 500 /error/404.html
-        ErrorDocument 502 /error/404.html
-        ErrorDocument 503 /error/404.html
-        ErrorDocument 504 /error/404.html
+Reload apache
 
-        <Directory /var/www/eden.wise.itb01.com/public>
-                Options +Indexes
-        </Directory>
+```JavaScript
+service apache2 reload
+```
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+Membuat folder eden.wise.itb01.com
 
-        <Directory /var/www/eden.wise.itb01.com>
-                Options +FollowSymLinks -Multiviews
-                AllowOverride All
-        </Directory>
+```JavaScript
+mkdir -p  /var/www/eden.wise.itb02.com/
+```
+
+Download & Copy ke eden.wise
+
+```JavaScript
+wget --no-check-certificate 'https://docs.google.com/uc?export=dowload&id=1q9g6nM85bW5T9f5yoyXtDqonUKKCHOTV' -O /root/eden.wise.zip
+unzip /root/eden.wise.zip -d /root
+cp -r /root/eden.wise/. /var/www/eden.wise.itb01.com
 ```
 
 Restart apache
@@ -777,19 +748,85 @@ service apache2 restart
 
 ### :rocket: **Testing di SSS**
 
+Memasukkan IP Eden ke /etc/resolv.conf
 
 ```JavaScript
-lynx www.eden.wise.itb01.com/hehehe
+nameserver 192.215.2.2
+nameserver 192.215.3.2
+nameserver 192.215.3.3
 ```
 
 Lynx
 
 ```JavaScript
-lynx wise.itb01.com/home
-lynx www.wise.itb01.com/home
+lynx eden.wise.itb01.com
+lynx www.eden.wise.itb01.com
 ```
 
-<img src="./img/Nomor12.jpg">
+<img src="./img/Nomor10.png">
+<br>
+
+## :large_blue_circle: **Soal 11** :large_blue_circle: 
+Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja (11).
+
+### :triangular_flag_on_post: **Jawaban:**
+<br>
+
+### :rocket: **Eden**
+
+Konfigurasi terhadap file nano /etc/apache2/sites-available/eden.wise.itb01.com.conf
+
+```JavaScript
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.itb01.com
+        ServerName eden.wise.itb01.com
+        ServerAlias www.eden.wise.itb01.com
+ 
+        <Directory /var/www/eden.wise.itb01.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+ 
+        <Directory /var/www/eden.wise.itb01.com/public>
+            Options +Indexes
+        </Directory>
+ 
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+ 
+</VirtualHost>
+```
+
+Restart Apache
+```JavaScript
+Service apache2 restart
+```
+
+### :rocket: **Testing di SSS**
+
+Memasukkan IP Eden ke /etc/resolv.conf
+
+```JavaScript
+nameserver 192.215.2.2
+nameserver 192.215.3.2
+nameserver 192.215.3.3
+```
+
+Lynx
+
+```JavaScript
+lynx eden.wise.itb01.com/public
+```
+
+<img src="./img/Nomor11.png">
+<br>
+
+
+## :large_blue_circle: **Soal 12** :large_blue_circle: 
+Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /error untuk mengganti error kode pada apache (12).
+
+### :triangular_flag_on_post: **Jawaban:**
 <br>
 
 ## :large_blue_circle: **Soal 13** :large_blue_circle: 
