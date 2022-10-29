@@ -504,9 +504,6 @@ service bind9 restart
 <img src="./img/Nomor7.png">
 
 
-## :large_blue_circle: **Soal 8** :large_blue_circle: 
-Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
-
 ### :triangular_flag_on_post: **Jawaban:**
 ## :large_blue_circle: **Soal 8** :large_blue_circle: 
 Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
@@ -624,9 +621,6 @@ lynx www.wise.itb02.com
 <br>
 
 <br>
-
-## :large_blue_circle: **Soal 9** :large_blue_circle: 
-Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapat menjadi menjadi www.wise.yyy.com/home (9).
 
 ### :triangular_flag_on_post: **Jawaban:**
 ## :large_blue_circle: **Soal 9** :large_blue_circle: 
