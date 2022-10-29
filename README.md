@@ -508,6 +508,121 @@ service bind9 restart
 Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
 
 ### :triangular_flag_on_post: **Jawaban:**
+## :large_blue_circle: **Soal 8** :large_blue_circle: 
+Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
+
+### :triangular_flag_on_post: **Jawaban:**
+<br>
+
+### :rocket: **WISE**
+
+Mengubah konfigurasi `/etc/bind/wise/wise.itb02.com` yang awalnya IP Wise menjadi IP Eden
+```JavaScript
+$TTL    604800
+@       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      wise.itb01.com.
+@       IN      A       10.45.3.3 ;IP Eden
+www     IN      CNAME   wise.itb01.com.
+@       IN      AAAA    ::1
+eden    IN      A       10.45.3.3 ;IP Eden
+www.eden IN     CNAME   eden.wise.itb01.com.
+ns1     IN      A       10.45.3.2 ;IP Berlint
+operation IN    NS      ns1
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :rocket: **Eden**
+
+Menginstal package yang diperlukan
+
+```JavaScript
+apt-get install apache2 -y
+apt-get install php -y
+apt-get install unzip -y
+apt-get install libapache2-mod-php7.0 -y
+apt-get install ca-certificates openssl -y
+apt-get install wget -y
+```
+
+Mengedit file nano /etc/apache2/sites-available/wise.itb02.com.conf
+
+```JavaScript
+<VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wise.itb01.com
+        ServerName wise.itb01.com
+        ServerAlias www.wise.itb01.com
+
+        <Directory /var/www/wise.itb01.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+</VirtualHost>
+```
+
+Membuat folder
+
+```JavaScript
+mkdir -p /var/www/wise.itb01.com
+```
+
+Download file ketentuan yg ada di gdrive kemudian unzip dan copy ke /var/www/wise.itb01.com
+
+```JavaScript
+mkdir -p /var/www/wise.itb01.com
+
+wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1S0XhL9ViYN7TyCj2W66BNEXQD2AAAw2e' -O /root/wise.zip
+
+unzip /root/wise.zip -d /root
+
+cp -r /root/wise/. /var/www/wise.itb01.com
+```
+
+Start apache2, aktifkan configuration untuk wise.itb02.conf & reload apache
+
+```JavaScript
+service apache2 start
+a2ensite wise.itb01.conf
+service apache2 reload
+```
+
+### :rocket: **Testing di SSS**
+
+Menginstal lynx
+
+```JavaScript
+apt-get install lynx -y
+```
+
+Memasukkan IP Eden ke resolv.conf -> nano /etc/resolv.conf
+
+```JavaScript
+nameserver 192.215.2.2
+nameserver 192.215.3.2
+nameserver 192.215.3.3
+```
+
+Lynx
+
+```JavaScript
+lynx wise.itb02.com
+lynx www.wise.itb02.com
+```
+
+<img src="./img/Nomor8.png">
+<br>
+
 <br>
 
 ## :large_blue_circle: **Soal 9** :large_blue_circle: 
