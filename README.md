@@ -116,7 +116,6 @@ Memasukkan command `echo nameserver 192.168.122.1 > /etc/resolv.conf` di setiap 
 Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loid membuat website utama dengan akses wise.yyy.com dengan alias www.wise.yyy.com pada folder wise (2).
 
 ### :triangular_flag_on_post: **Jawaban:**
-<br>
 
 ### :rocket: **WISE**
 WISE merupakan DNS Master sehingga konfigurasi dilakukan di WISE. Pertama-tama kami mengupdate package terlebih dahulu kemudian menginstal bind9
@@ -192,6 +191,7 @@ ping www.wise.itb01.com
 ```
 
 <img src="./img/Nomor2.png">
+<br>
 
 ## :large_blue_circle: **Soal 3** :large_blue_circle: 
 Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.eden.wise.yyy.com yang diatur DNS-nya di WISE dan mengarah ke Eden (3).
@@ -234,12 +234,12 @@ ping www.eden.wise.itb01.com
 ping eden.wise.itb01.com
 ``` 
 <img src="./img/Nomor3.png">
+<br>
 
 ## :large_blue_circle: **Soal 4** :large_blue_circle: 
 Buat juga reverse domain untuk domain utama (4).
 
 ### :triangular_flag_on_post: **Jawaban:**
-<br>
 
 ### :rocket: **WISE**
 Melakukan konfigurasi pada file `/etc/bind/named.conf.local`
@@ -308,12 +308,12 @@ echo nameserver 10.45.2.2 > /etc/resolv.conf
 host -t PTR 10.45.2.2
 ```
 <img src="./img/Nomor4.png">
+<br>
 
 ## :large_blue_circle: **Soal 5** :large_blue_circle: 
 Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama (5).
 
 ### :triangular_flag_on_post: **Jawaban:**
-<br>
 
 ### :rocket: **WISE**
 
@@ -376,12 +376,12 @@ ping wise.itb01.com
 ```
 
 <img src="./img/Nomor5.png">
+<br>
 
 ## :large_blue_circle: **Soal 6** :large_blue_circle: 
 Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operation yaitu operation.wise.yyy.com dengan alias www.operation.wise.yyy.com yang didelegasikan dari WISE ke Berlint dengan IP menuju ke Eden dalam folder operation (6).
 
 ### :triangular_flag_on_post: **Jawaban:**
-<br>
 
 ### :rocket: **WISE**
 Melakukan konfigurasi terhadap file `/etc/bind/wise/wise.itb01.com`
@@ -469,12 +469,12 @@ service bind9 restart
 ping www.operation.wise.itb01.com
 ```
 <img src="./img/Nomor6.png">
+<br>
 
 ## :large_blue_circle: **Soal 7** :large_blue_circle: 
 Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden (7).
 
 ### :triangular_flag_on_post: **Jawaban:**
-<br>
 
 ### :rocket: **Berlint**
 Melakukan konfigurasi pada file `/etc/bind/operation/operation.wise.itb01.com`
