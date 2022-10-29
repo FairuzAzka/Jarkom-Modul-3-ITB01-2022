@@ -702,14 +702,14 @@ Melakukan konfigurasi pada file /etc/apache2/sites-available/eden.wise.itb01.com
 ```
 <VirtualHost *:80>
         ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/eden.wise.itb03.com
-        ServerName eden.wise.itb03.com
-        ServerAlias www.eden.wise.itb03.com
+        DocumentRoot /var/www/eden.wise.itb01.com
+        ServerName eden.wise.itb01.com
+        ServerAlias www.eden.wise.itb01.com
 
         ErrorLog ${APACHE_LOG_DIR}/error.log
         CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-        <Directory /var/www/eden.wise.itb03.com>
+        <Directory /var/www/eden.wise.itb01.com>
                 Options +FollowSymLinks -Multiviews
                 AllowOverride All
         </Directory>
