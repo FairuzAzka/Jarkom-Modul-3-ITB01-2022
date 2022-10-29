@@ -15,7 +15,99 @@
 ## :large_blue_circle: **Soal 1** :large_blue_circle: 
 WISE akan dijadikan sebagai DNS Master, Berlint akan dijadikan DNS Slave, dan Eden akan digunakan sebagai Web Server. Terdapat 2 Client yaitu SSS, dan Garden. Semua node terhubung pada router Ostania, sehingga dapat mengakses internet (1).
 
-:triangular_flag_on_post: **Jawaban:**
+### :triangular_flag_on_post: **Jawaban:**
+Kami melakukan konfigurasi pada setiap node yang ada pada topologi tersebut.
+
+:rocket: **Ostania**
+```JavaScript
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+      address 10.45.1.1
+      netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+      address 10.45.2.1
+      netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+      address 10.45.3.1
+      netmask 255.255.255.0
+```
+
+:rocket: **WISE**
+```JavaScript
+auto eth0
+iface eth0 inet static
+      address 10.45.2.2
+      netmask 255.255.255.0
+      gateway 10.45.2.1
+```
+
+:rocket: **SSS**
+```JavaScript
+auto eth0
+iface eth0 inet static
+      address 10.45.1.2
+      netmask 255.255.255.0
+      gateway 10.45.1.1
+```
+
+:rocket: **Garden**
+```JavaScript
+auto eth0
+iface eth0 inet static
+      address 10.45.1.3
+      netmask 255.255.255.0
+      gateway 10.45.1.1
+```
+
+:rocket: **Berlint**
+```JavaScript
+auto eth0
+iface eth0 inet static
+      address 10.45.3.2
+      netmask 255.255.255.0
+      gateway 10.45.3.1
+```
+
+:rocket: **Eden**
+```JavaScript
+auto eth0
+iface eth0 inet static
+      address 10.45.3.3
+      netmask 255.255.255.0
+      gateway 10.45.3.1
+```
+
+Kemudian kami manjalankan command berikut di Ostania
+```JavaScript
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.45.0.0/16
+```
+
+Setelah itu kami mencari IP DNS dari Ostania dengan command `cat /etc/resolv.conf`
+```JavaScript
+nameserver 192.168.122.1
+```
+
+Memasukkan command `echo nameserver 192.168.122.1 > /etc/resolv.conf` di setiap node untuk testing secara umum apakah setiap node sudah terhubung dengan google
+
+:white_check_mark: **Testing WISE**
+<img src="./img/Nomor1_buktiPingWISE.png">
+:white_check_mark: **Testing SSS**
+<img src="./img/Nomor1_buktiPingSSS.png">
+:white_check_mark: **Testing Garden**
+<img src="./img/Nomor1_buktiPingGarden.png">
+:white_check_mark: **Testing Berlint**
+<img src="./img/Nomor1_buktiPingBerlint.png">
+:white_check_mark: **Testing Eden**
+<img src="./img/Nomor1_buktiPingEden.png">
+
+
 <br>
 
 ## :large_blue_circle: **Soal 2** :large_blue_circle: 
