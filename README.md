@@ -835,47 +835,6 @@ Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
 
-### :rocket: **EDEN**
-Melakukan konfigurasi pada file /etc/apache2/sites-available/eden.wise.itb01.com.conf
-
-```
-<VirtualHost *:80>
-        ServerAdmin webmaster@localhost
-        DocumentRoot /var/www/eden.wise.itb03.com
-        ServerName eden.wise.itb03.com
-        ServerAlias www.eden.wise.itb03.com
-
-        ErrorDocument 404 /error/404.html
-        ErrorDocument 500 /error/404.html
-        ErrorDocument 502 /error/404.html
-        ErrorDocument 503 /error/404.html
-        ErrorDocument 504 /error/404.html
-
-        <Directory /var/www/eden.wise.itb03.com/public>
-                Options +Indexes
-        </Directory>
-
-        Alias "/js" "/var/www/eden.wise.itb03.com/public/js"
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-
-        <Directory /var/www/eden.wise.itb03.com>
-                Options +FollowSymLinks -Multiviews
-                AllowOverride All
-        </Directory>
-</VirtualHost>
-```
-
-Melakukan perubahan direktori /js menjadi /public/js pada alias "/js" dengan "/var/www/eden.wise.itb01.com/public/js"
-
-
-Kemudian melakukan restart service apache2 menggunakan perintah
-
-```
-service apache2 restart
-```
-
 ## :large_blue_circle: **Soal 14** :large_blue_circle: 
 Loid meminta agar www.strix.operation.wise.yyy.com hanya bisa diakses dengan port 15000 dan port 15500 (14)
 
