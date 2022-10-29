@@ -620,7 +620,7 @@ lynx wise.itb02.com
 lynx www.wise.itb02.com
 ```
 
-<img src="./img/Nomor8.png">
+<img src="./img/Nomor8.jpg">
 <br>
 
 <br>
