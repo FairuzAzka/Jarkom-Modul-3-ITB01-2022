@@ -739,6 +739,58 @@ Tidak hanya itu, Loid juga ingin menyiapkan error file 404.html pada folder /err
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
+### :rocket: **Eden**
+
+Melakukan konfigurasi ErrorDoocument pada setiap error yang diarahkan kepada file.
+konfigurasi tersebut diletakan pada direktori /etc/apache2/sites-available/eden.wise.itb01.com.conf
+
+```JavaScript
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.itb01.com
+        ServerName eden.wise.itb01.com
+        ServerAlias www.eden.wise.itb01.com
+
+        ErrorDocument 404 /error/404.html
+        ErrorDocument 500 /error/404.html
+        ErrorDocument 502 /error/404.html
+        ErrorDocument 503 /error/404.html
+        ErrorDocument 504 /error/404.html
+
+        <Directory /var/www/eden.wise.itb01.com/public>
+                Options +Indexes
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        <Directory /var/www/eden.wise.itb01.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+```
+
+Restart apache
+```JavaScript
+service apache2 restart
+```
+
+### :rocket: **Testing di SSS**
+
+
+```JavaScript
+lynx www.eden.wise.itb01.com/hehehe
+```
+
+Lynx
+
+```JavaScript
+lynx wise.itb01.com/home
+lynx www.wise.itb01.com/home
+```
+
+<img src="./img/Nomor12.jpg">
+<br>
 
 ## :large_blue_circle: **Soal 13** :large_blue_circle: 
 Loid juga meminta Franky untuk dibuatkan konfigurasi virtual host. Virtual host ini bertujuan untuk dapat mengakses file asset www.eden.wise.yyy.com/public/js menjadi www.eden.wise.yyy.com/js (13).
