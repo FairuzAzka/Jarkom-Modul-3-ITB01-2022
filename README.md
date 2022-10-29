@@ -18,7 +18,7 @@ WISE akan dijadikan sebagai DNS Master, Berlint akan dijadikan DNS Slave, dan Ed
 ### :triangular_flag_on_post: **Jawaban:**
 Kami melakukan konfigurasi pada setiap node yang ada pada topologi tersebut.
 
-:rocket: **Ostania**
+### :rocket: **Ostania**
 ```JavaScript
 auto eth0
 iface eth0 inet dhcp
@@ -39,7 +39,7 @@ iface eth3 inet static
       netmask 255.255.255.0
 ```
 
-:rocket: **WISE**
+### :rocket: **WISE**
 ```JavaScript
 auto eth0
 iface eth0 inet static
@@ -48,7 +48,7 @@ iface eth0 inet static
       gateway 10.45.2.1
 ```
 
-:rocket: **SSS**
+### :rocket: **SSS**
 ```JavaScript
 auto eth0
 iface eth0 inet static
@@ -57,7 +57,7 @@ iface eth0 inet static
       gateway 10.45.1.1
 ```
 
-:rocket: **Garden**
+### :rocket: **Garden**
 ```JavaScript
 auto eth0
 iface eth0 inet static
@@ -66,7 +66,7 @@ iface eth0 inet static
       gateway 10.45.1.1
 ```
 
-:rocket: **Berlint**
+### :rocket: **Berlint**
 ```JavaScript
 auto eth0
 iface eth0 inet static
@@ -75,7 +75,7 @@ iface eth0 inet static
       gateway 10.45.3.1
 ```
 
-:rocket: **Eden**
+### :rocket: **Eden**
 ```JavaScript
 auto eth0
 iface eth0 inet static
@@ -96,15 +96,19 @@ nameserver 192.168.122.1
 
 Memasukkan command `echo nameserver 192.168.122.1 > /etc/resolv.conf` di setiap node untuk testing secara umum apakah setiap node sudah terhubung dengan google
 
-:white_check_mark: **Testing WISE**
+### :white_check_mark: **Testing WISE**
 <img src="./img/Nomor1_buktiPingWISE.png">
-:white_check_mark: **Testing SSS**
+
+### :white_check_mark: **Testing SSS**
 <img src="./img/Nomor1_buktiPingSSS.png">
-:white_check_mark: **Testing Garden**
+
+### :white_check_mark: **Testing Garden**
 <img src="./img/Nomor1_buktiPingGarden.png">
-:white_check_mark: **Testing Berlint**
+
+### :white_check_mark: **Testing Berlint**
 <img src="./img/Nomor1_buktiPingBerlint.png">
-:white_check_mark: **Testing Eden**
+
+### :white_check_mark: **Testing Eden**
 <img src="./img/Nomor1_buktiPingEden.png">
 <br>
 
@@ -114,11 +118,122 @@ Untuk mempermudah mendapatkan informasi mengenai misi dari Handler, bantulah Loi
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
 
+### :rocket: **WISE**
+WISE merupakan DNS Master sehingga konfigurasi dilakukan di WISE. Pertama-tama kami mengupdate package terlebih dahulu kemudian menginstal bind9
+
+```JavaScript
+apt-get update
+apt-get install bind9 -y
+```
+
+Kemudian melakukan konfigurasi terhadap file ` /etc/bind/named.conf.local`  
+```JavaScript
+zone "wise.itb01.com" {  
+        type master;  
+        file "/etc/bind/wise/wise.itb01.com";
+};
+```
+
+Membuat folder 
+```JavaScript
+mkdir /etc/bind/wise
+```
+
+Mengcopy isi file db.local ke ` /etc/bind/wise/wise.itb02.com`
+```JavaScript
+cp /etc/bind/db.local /etc/bind/wise/wise.itb01.com
+```
+
+Melakukan konfigurasi terhadap file `/etc/bind/wise/wise.itb01.com`
+```JavaScript
+$TTL    604800
+@       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      wise.itb01.com.
+@       IN      A       10.45.2.2
+@       IN      AAAA    ::1
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+Kemudian untuk membuat CNAME maka dilakukan konfigurasi kembali di file `/etc/bind/wise/wise.itb01.com`
+```JavaScript
+$TTL    604800
+@       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      wise.itb01.com.
+@       IN      A       10.45.2.2
+www     IN      CNAME   wise.itb01.com.
+@       IN      AAAA    ::1
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :white_check_mark: **Testing di SSS**
+
+```JavaScript
+ping www.wise.itb01.com
+```
+
+<img src="./img/Nomor2.png">
+
 ## :large_blue_circle: **Soal 3** :large_blue_circle: 
 Setelah itu ia juga ingin membuat subdomain eden.wise.yyy.com dengan alias www.eden.wise.yyy.com yang diatur DNS-nya di WISE dan mengarah ke Eden (3).
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
+Dalam pembuatan subdomain dan CNAME maka pertama-tama mengubah konfigurasi pada WISE
+<br>
+<br>
+
+### :rocket: **WISE**
+Melakukan konfigurasi pada file ` /etc/bind/wise/wise.itb01.com`
+
+```JavaScript
+$TTL    604800
+@       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      wise.itb01.com.
+@       IN      A       10.45.2.2
+www     IN      CNAME   wise.itb01.com.
+@       IN      AAAA    ::1
+eden    IN      A       10.45.3.3
+www.eden IN     CNAME   eden.wise.itb01.com.
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :rocket: **Testing di SSS**
+
+```JavaScript
+ping www.eden.wise.itb01.com 
+ping eden.wise.itb01.com
+``` 
+<img src="./img/Nomor3.png">
 
 ## :large_blue_circle: **Soal 4** :large_blue_circle: 
 Buat juga reverse domain untuk domain utama (4).
@@ -126,11 +241,141 @@ Buat juga reverse domain untuk domain utama (4).
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
 
+### :rocket: **WISE**
+Melakukan konfigurasi pada file `/etc/bind/named.conf.local`
+
+```JavaScript
+zone "wise.itb01.com" {
+        type master;
+        file "/etc/bind/wise/wise.itb01.com";
+};
+
+zone "2.45.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/wise/2.45.10.in-addr.arpa";
+};
+```
+
+Mengcopy isi file db.local ke ` /etc/bind/wise/wise.itb02.com`
+```JavaScript
+cp /etc/bind/db.local /etc/bind/wise/wise.itb01.com
+```
+
+Melakukan konfigurasi pada file `/etc/bind/wise/2.45.10.in-addr.arpa`
+
+
+```JavaScript
+$TTL    604800
+@       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+2.45.10.in-addr.arpa. IN      NS     wise.itb01.com.
+2                     IN      PTR    wise.itb01.com.
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :rocket: **SSS**
+Merubah nameserver ke IP Ostania agar terdapat terhubung ke internet
+```JavaScript
+echo nameserver 192.168.122.1 > /etc/resolv.conf
+```
+
+Mengupdate package
+```JavaScript
+apt-get update
+```
+
+Menginstal DNS Utils
+```JavaScript
+apt-get install dnsutils
+```
+
+Merubah nameserver agar merujuk WISE
+```JavaScript
+echo nameserver 10.45.2.2 > /etc/resolv.conf
+```
+
+### :rocket: **Testing di SSS**
+```JavaScript
+host -t PTR 10.45.2.2
+```
+<img src="./img/Nomor4.png">
+
 ## :large_blue_circle: **Soal 5** :large_blue_circle: 
 Agar dapat tetap dihubungi jika server WISE bermasalah, buatlah juga Berlint sebagai DNS Slave untuk domain utama (5).
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
+
+### :rocket: **WISE**
+
+Melakukan konfigurasi pada file `/etc/bind/named.conf.local`
+
+```JavaScript
+zone "wise.itb01.com" {  
+        type master;
+        notify yes;
+        also-notify {10.45.3.2;};  
+        allow-transfer {10.45.3.2;}; 
+        file "/etc/bind/wise/wise.itb01.com";
+};
+
+zone "2.45.10.in-addr.arpa" {
+        type master;
+        file "/etc/bind/wise/2.45.10.in-addr.arpa";
+};
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :rocket: **Berlint**
+
+Melakukan update package dan install bind9
+```JavaScript
+apt-get update
+apt-get install bind9 -y
+```
+
+Konfigurasi pada file `/etc/bind/named.conf.local`
+
+```JavaScript
+zone "wise.itb01.com" {
+        type slave;
+        masters {10.45.2.2;};
+        file "/var/lib/bind/wise.itb01.com";
+};
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :rocket: **Testing di SSS**
+
+Melakukan konfigurasi di file ` /etc/resolv.conf`
+```JavaScript
+nameserver 10.45.2.2
+nameserver 10.45.3.2
+```
+
+Melakukan ping
+```JavaScript
+ping wise.itb01.com
+```
+
+<img src="./img/Nomor5.png">
 
 ## :large_blue_circle: **Soal 6** :large_blue_circle: 
 Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operation yaitu operation.wise.yyy.com dengan alias www.operation.wise.yyy.com yang didelegasikan dari WISE ke Berlint dengan IP menuju ke Eden dalam folder operation (6).
@@ -138,11 +383,126 @@ Karena banyak informasi dari Handler, buatlah subdomain yang khusus untuk operat
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
 
+### :rocket: **WISE**
+Melakukan konfigurasi terhadap file `/etc/bind/wise/wise.itb01.com`
+```JavaScript
+$TTL    604800
+@       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      wise.itb01.com.
+@       IN      A       10.45.2.2
+www     IN      CNAME   wise.itb01.com.
+@       IN      AAAA    ::1
+eden    IN      A       10.45.3.3
+www.eden IN     CNAME   eden.wise.itb01.com.
+ns1     IN      A       10.45.3.2
+operation IN    NS      ns1
+```
+
+Mengedit file ` /etc/bind/named.conf.options` menjadi sebagai berikut.
+```JavaScript
+//dnssec-validation auto; dicomment 
+
+allow-query{any;}; //ditambahin 
+```
+
+### :rocket: **Berlint**
+Mengedit file ` /etc/bind/named.conf.options` menjadi sebagai berikut.
+```JavaScript
+//dnssec-validation auto; dicomment 
+
+allow-query{any;}; //ditambahin 
+```
+
+Melakukan konfigurasi kembali pada file `/etc/bind/named.conf.local`
+```JavaScript
+zone "wise.itb01.com" {
+        type slave;
+        masters {10.45.2.2;};
+        file "/var/lib/bind/wise.itb01.com";
+};
+
+zone "operation.wise.itb01.com" {
+        type master;
+        file "/etc/bind/operation/operation.wise.itb01.com";
+};
+```
+
+Membuat direktori
+```JavaScript
+mkdir /etc/bind/operation
+```
+
+Mengcopy isi file db.local ke ` /etc/bind/wise/wise.itb02.com`
+```JavaScript
+cp /etc/bind/db.local /etc/bind/wise/wise.itb01.com
+```
+
+Kemudian mengkonfigurasi file `/etc/bind/operation/operation.wise.itb01.com`
+```JavaScript
+$TTL    604800
+@       IN      SOA     operation.wise.itb01.com. root.operation.wise.itb01.com. (
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      operation.wise.itb01.com.
+@       IN      A       10.45.3.3
+www     IN      CNAME   operation.wise.itb01.com.
+@       IN      AAAA    ::1
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :rocket: **Testing di SSS**
+```JavaScript
+ping www.operation.wise.itb01.com
+```
+<img src="./img/Nomor6.png">
+
 ## :large_blue_circle: **Soal 7** :large_blue_circle: 
 Untuk informasi yang lebih spesifik mengenai Operation Strix, buatlah subdomain melalui Berlint dengan akses strix.operation.wise.yyy.com dengan alias www.strix.operation.wise.yyy.com yang mengarah ke Eden (7).
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
+
+### :rocket: **Berlint**
+Melakukan konfigurasi pada file `/etc/bind/operation/operation.wise.itb01.com`
+```JavaScript
+$TTL    604800
+@       IN      SOA     operation.wise.itb01.com. root.operation.wise.itb01.com$
+                       20221025         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      operation.wise.itb01.com.
+@       IN      A       10.45.3.3
+www     IN      CNAME   operation.wise.itb01.com.
+strix   IN      A       10.45.3.3
+www.strix  IN   CNAME   strix.operation.wise.itb01.com.
+@       IN      AAAA    ::1
+```
+
+Merestart bind9
+```JavaScript
+service bind9 restart
+```
+
+### :rocket: **Testing di SSS**
+<img src="./img/Nomor7.png">
+
 
 ## :large_blue_circle: **Soal 8** :large_blue_circle: 
 Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pertama dengan webserver www.wise.yyy.com. Pertama, Loid membutuhkan webserver dengan DocumentRoot pada /var/www/wise.yyy.com (8).
