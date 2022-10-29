@@ -716,6 +716,18 @@ Melakukan konfigurasi pada file /etc/apache2/sites-available/eden.wise.itb01.com
 </VirtualHost>
 ```
 
+Melakukan aktivasi virtualhost menggunakan a2ensite dan membuat sebuah direktori untuk documentroot dari subdomain eden.wise.itb01.com lalu memindahkan folder eden.wise dalam root pada /var/www/eden.wise.itb01.com/
+
+```
+a2ensite eden.wise.itb01.com
+mkdir -p  `/var/www/eden.wise.itb01.com/`
+mv eden.wise/ /var/www/eden.wise.itb01.com/
+service apache2 restart
+```
+
+Pengetesan
+(gambar testing lynx eden.wise.itb01.com)
+
 ## :large_blue_circle: **Soal 11** :large_blue_circle: 
 Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja (11).
 
