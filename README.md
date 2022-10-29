@@ -696,6 +696,26 @@ Setelah itu, pada subdomain www.eden.wise.yyy.com, Loid membutuhkan penyimpanan 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
 
+### :rocket: **WISE**
+
+Melakukan konfigurasi pada file /etc/apache2/sites-available/eden.wise.itb01.com.conf
+```
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/eden.wise.itb03.com
+        ServerName eden.wise.itb03.com
+        ServerAlias www.eden.wise.itb03.com
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        <Directory /var/www/eden.wise.itb03.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+</VirtualHost>
+```
+
 ## :large_blue_circle: **Soal 11** :large_blue_circle: 
 Akan tetapi, pada folder /public, Loid ingin hanya dapat melakukan directory listing saja (11).
 
