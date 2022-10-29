@@ -629,6 +629,71 @@ lynx www.wise.itb02.com
 Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapat menjadi menjadi www.wise.yyy.com/home (9).
 
 ### :triangular_flag_on_post: **Jawaban:**
+## :large_blue_circle: **Soal 9** :large_blue_circle: 
+Setelah itu, Loid juga membutuhkan agar url www.wise.yyy.com/index.php/home dapat menjadi menjadi www.wise.yyy.com/home (9).
+
+### :triangular_flag_on_post: **Jawaban:**
+<br>
+
+### :rocket: **Eden**
+
+Melakukan a2enmod rewrite dan restart apache
+
+```JavaScript
+a2enmod rewrite
+service apache2 restart
+```
+
+Mengkonfigurasi file nano /var/www/wise.itb02.com/.htaccess untuk melakukan pengecekan apakah request-an yang diterima ke file/direktori atau bukan, jika terpenuhi maka membuat rule yang akan mendirect ke /index.php/home. $1 ialah parameter yang diin[utkan di url konfigurasi file
+
+```JavaScript
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (.*) /index.php/\$1 [L]
+```
+
+Mengkonfigurasi file nano /etc/apache2/sites-available/wise.itb02.com.conf
+
+```JavaScript
+<VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wise.itb01.com
+        ServerName wise.itb01.com
+        ServerAlias www.wise.itb01.com
+
+        <Directory /var/www/wise.itb01.com>
+                Options +FollowSymLinks -Multiviews
+                AllowOverride All
+        </Directory>
+</VirtualHost>
+```
+
+Restart apache
+```JavaScript
+service apache2 restart
+```
+
+### :rocket: **Testing di SSS**
+
+Memasukkan IP Eden ke nano /etc/resolv.conf
+
+```JavaScript
+nameserver 192.215.2.2
+nameserver 192.215.3.2
+nameserver 192.215.3.3
+```
+
+Lynx
+
+```JavaScript
+lynx wise.itb01.com/home
+lynx www.wise.itb01.com/home
+```
+
+<img src="./img/Nomor9.jpg">
+<br>
 <br>
 
 ## :large_blue_circle: **Soal 10** :large_blue_circle: 
