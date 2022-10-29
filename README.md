@@ -513,7 +513,7 @@ Setelah melakukan konfigurasi server, maka dilakukan konfigurasi Webserver. Pert
 
 ### :rocket: **WISE**
 
-Mengubah konfigurasi `/etc/bind/wise/wise.itb02.com` yang awalnya IP Wise menjadi IP Eden
+Mengubah konfigurasi `/etc/bind/wise/wise.itb01.com` yang awalnya IP Wise menjadi IP Eden
 ```JavaScript
 $TTL    604800
 @       IN      SOA     wise.itb01.com. root.wise.itb01.com. (
@@ -551,7 +551,7 @@ apt-get install ca-certificates openssl -y
 apt-get install wget -y
 ```
 
-Mengedit file nano /etc/apache2/sites-available/wise.itb02.com.conf
+Mengedit file nano /etc/apache2/sites-available/wise.itb01.com.conf
 
 ```JavaScript
 <VirtualHost *:80>
@@ -613,8 +613,8 @@ nameserver 192.215.3.3
 Lynx
 
 ```JavaScript
-lynx wise.itb02.com
-lynx www.wise.itb02.com
+lynx wise.itb01.com
+lynx www.wise.itb01.com
 ```
 
 <img src="./img/Nomor8.jpg">
@@ -638,7 +638,7 @@ a2enmod rewrite
 service apache2 restart
 ```
 
-Mengkonfigurasi file nano /var/www/wise.itb02.com/.htaccess untuk melakukan pengecekan apakah request-an yang diterima ke file/direktori atau bukan, jika terpenuhi maka membuat rule yang akan mendirect ke /index.php/home. $1 ialah parameter yang diin[utkan di url konfigurasi file
+Mengkonfigurasi file nano /var/www/wise.itb01.com/.htaccess untuk melakukan pengecekan apakah request-an yang diterima ke file/direktori atau bukan, jika terpenuhi maka membuat rule yang akan mendirect ke /index.php/home. $1 ialah parameter yang diin[utkan di url konfigurasi file
 
 ```JavaScript
 RewriteEngine On
@@ -647,7 +647,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (.*) /index.php/\$1 [L]
 ```
 
-Mengkonfigurasi file nano /etc/apache2/sites-available/wise.itb02.com.conf
+Mengkonfigurasi file nano /etc/apache2/sites-available/wise.itb01.com.conf
 
 ```JavaScript
 <VirtualHost *:80>
