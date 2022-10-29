@@ -686,7 +686,7 @@ lynx wise.itb01.com/home
 lynx www.wise.itb01.com/home
 ```
 
-<img src="./img/Nomor9.jpg">
+<img src="./img/Nomor9.png">
 <br>
 <br>
 
