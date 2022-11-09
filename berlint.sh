@@ -1,75 +1,39 @@
 echo "nameserver 192.168.122.1" > /etc/resolv.conf
+
 apt-get update
+apt-get install libapache2-mod-php7.0 -y
+apt-get install squid -y
 
-# nomor 5
-apt-get update  
-apt-get install bind9 -y
-echo '
-zone "wise.itb01.com" {
-        type slave;
-        masters { 10.45.2.2; }; // Masukan IP Wise tanpa tanda petik
-        file "/var/lib/bind/wise.itb01.com";
-};
-' > /etc/bind/named.conf.local
-
-service bind9 restart
-
-# nomor 6
 echo "
-options {
-        directory \"/var/cache/bind\";
-        allow-query{any;};
-        auth-nxdomain no;    # conform to RFC1035
-        listen-on-v6 { any; };
-};
-" > /etc/bind/named.conf.options
+	http_port 5000
+	visible_hostname Berlint
+	#http_access allow all
+" > /etc/squid/squid.conf
 
-echo '
-zone "wise.itb01.com" {
-        type slave;
-        masters { 10.45.2.2; }; // Masukan IP Wise tanpa tanda petik
-        file "/var/lib/bind/wise.itb01.com";
-};
+# nomor 1
+# BELOM PASTI
 
-zone "operation.wise.itb01.com"{
-        type master;
-        file "/etc/bind/operation/operation.wise.itb01.com";
-};
-'> /etc/bind/named.conf.local
+echo "
+    acl AVAILABLE_WORKING time MTWHF 08:00-17:00
+    acl AVAILABLE_WORKING time AS 00:00-23:59
+" >/etc/squid/acl.conf
 
-mkdir /etc/bind/operation
+echo "
+    include /etc/squid/acl.conf
 
-echo '
-$TTL    604800
-@       IN      SOA     operation.wise.itb01.com. root.operation.wise.itb01.com. (
-                        20221025      ; Serial
-                        604800        ; Refresh
-                        86400         ; Retry
-                        2419200       ; Expire
-                        604800 )      ; Negative Cache TTL
-;
-@               IN      NS      operation.wise.itb01.com.
-@               IN      A       10.45.3.3 ;IP Eden
-www             IN      CNAME   operation.wise.itb01.com.
-' > /etc/bind/operation/operation.wise.itb01.com
+    http_port 5000
+    visible_hostname Berlint
+    #http_access allow all
 
-service bind9 restart
+    auth_param basic program /usr/lib/squid/basic_ncsa_auth /etc/squid/passwd
+    auth_param basic children 5
+    auth_param basic realm Proxy
+    auth_param basic credentialsttl 2 hours
+    auth_param basic casesensitive on
+    acl USERS proxy_auth REQUIRED
+    http_access allow USERS AVAILABLE_WORKING
+    http_access deny all
+" > /etc/squid/squid.conf
 
-# nomor 7
-echo '
-$TTL    604800
-@       IN      SOA     operation.wise.itb01.com. root.operation.wise.itb01.com. (
-                        20221025      ; Serial
-                        604800        ; Refresh
-                        86400         ; Retry
-                        2419200       ; Expire
-                        604800 )      ; Negative Cache TTL
-;
-@               IN      NS      operation.wise.itb01.com.
-@               IN      A       10.45.3.3  ;IP Eden
-www             IN      CNAME   operation.wise.itb01.com.
-strix           IN      A       10.45.3.3  ;IP Eden
-www.strix       IN      CNAME   operation.wise.itb01.com.
-' > /etc/bind/operation/operation.wise.itb01.com
+service squid restart
 
-service bind9 restart
