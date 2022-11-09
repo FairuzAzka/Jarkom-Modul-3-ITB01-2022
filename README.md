@@ -18,98 +18,50 @@ Loid bersama Franky berencana membuat peta tersebut dengan kriteria WISE sebagai
 ### :triangular_flag_on_post: **Jawaban:**
 Kami melakukan konfigurasi pada setiap node yang ada pada topologi tersebut.
 
-### :rocket: **Ostania**
+### :rocket: **Ostania [ DHCP Relay ]**
 ```JavaScript
-auto eth0
-iface eth0 inet dhcp
 
-auto eth1
-iface eth1 inet static
-      address 10.45.1.1
-      netmask 255.255.255.0
-
-auto eth2
-iface eth2 inet static
-      address 10.45.2.1
-      netmask 255.255.255.0
-
-auto eth3
-iface eth3 inet static
-      address 10.45.3.1
-      netmask 255.255.255.0
 ```
 
-### :rocket: **WISE**
+### :rocket: **WISE [ DNS Server ]**
 ```JavaScript
-auto eth0
-iface eth0 inet static
-      address 10.45.2.2
-      netmask 255.255.255.0
-      gateway 10.45.2.1
+
 ```
 
-### :rocket: **SSS**
+### :rocket: **Berlint [ Proxy Server ]**
 ```JavaScript
-auto eth0
-iface eth0 inet static
-      address 10.45.1.2
-      netmask 255.255.255.0
-      gateway 10.45.1.1
+
 ```
 
-### :rocket: **Garden**
+### :rocket: **Westalis [ DHCP Server ]**
 ```JavaScript
-auto eth0
-iface eth0 inet static
-      address 10.45.1.3
-      netmask 255.255.255.0
-      gateway 10.45.1.1
+
 ```
 
-### :rocket: **Berlint**
+### :rocket: **Eden [ Web Server ]**
 ```JavaScript
-auto eth0
-iface eth0 inet static
-      address 10.45.3.2
-      netmask 255.255.255.0
-      gateway 10.45.3.1
+
 ```
 
-### :rocket: **Eden**
+### :rocket: **SSS, Garden, Eden [ Client Proxy ]**
 ```JavaScript
-auto eth0
-iface eth0 inet static
-      address 10.45.3.3
-      netmask 255.255.255.0
-      gateway 10.45.3.1
-```
 
-Kemudian kami manjalankan command berikut di Ostania
-```JavaScript
-iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -s 10.45.0.0/16
 ```
-
-Setelah itu kami mencari IP DNS dari Ostania dengan command `cat /etc/resolv.conf`
-```JavaScript
-nameserver 192.168.122.1
-```
-
-Memasukkan command `echo nameserver 192.168.122.1 > /etc/resolv.conf` di setiap node untuk testing secara umum apakah setiap node sudah terhubung dengan google
 
 ### :white_check_mark: **Testing WISE**
-<img src="./img/Nomor1_buktiPingWISE.png">
+<img src="">
 
 ### :white_check_mark: **Testing SSS**
-<img src="./img/Nomor1_buktiPingSSS.png">
+<img src="">
 
 ### :white_check_mark: **Testing Garden**
-<img src="./img/Nomor1_buktiPingGarden.png">
+<img src="">
 
 ### :white_check_mark: **Testing Berlint**
-<img src="./img/Nomor1_buktiPingBerlint.png">
+<img src="">
 
 ### :white_check_mark: **Testing Eden**
-<img src="./img/Nomor1_buktiPingEden.png">
+<img src="">
 <br>
 
 
@@ -183,7 +135,7 @@ Loid dan Franky berencana menjadikan Eden sebagai server untuk pertukaran inform
 
 
 ## :large_blue_circle: **Soal 8** :large_blue_circle: 
-blabla
+Client hanya dapat mengakses internet diluar (selain) hari & jam kerja (senin-jumat 08.00 - 17.00) dan hari libur (dapat mengakses 24 jam penuh).
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
@@ -195,7 +147,7 @@ blabla
 
 
 ## :large_blue_circle: **Soal 9** :large_blue_circle: 
-blabla
+Adapun pada hari dan jam kerja sesuai nomor (1), client hanya dapat mengakses domain loid-work.com dan franky-work.com (IP tujuan domain dibebaskan).
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
@@ -207,7 +159,7 @@ blabla
 
 
 ## :large_blue_circle: **Soal 10** :large_blue_circle: 
-blabla
+Saat akses internet dibuka, client dilarang untuk mengakses web tanpa HTTPS. (Contoh web HTTP: http://example.com)
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
@@ -219,7 +171,7 @@ blabla
 
 
 ## :large_blue_circle: **Soal 11** :large_blue_circle: 
-blabla
+Agar menghemat penggunaan, akses internet dibatasi dengan kecepatan maksimum 128 Kbps pada setiap host (Kbps = kilobit per second; lakukan pengecekan pada tiap host, ketika 2 host akses internet pada saat bersamaan, keduanya mendapatkan speed maksimal yaitu 128 Kbps)
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
@@ -232,7 +184,7 @@ blabla
 
 
 ## :large_blue_circle: **Soal 12** :large_blue_circle: 
-blabla
+Setelah diterapkan, ternyata peraturan nomor (4) mengganggu produktifitas saat hari kerja, dengan demikian pembatasan kecepatan hanya diberlakukan untuk pengaksesan internet pada hari libur
 
 ### :triangular_flag_on_post: **Jawaban:**
 <br>
